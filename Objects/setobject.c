@@ -2076,9 +2076,9 @@ static PyMethodDef set_methods[] = {
 static PyNumberMethods set_as_number = {
     0,                                  /*nb_add*/
     (binaryfunc)set_sub,                /*nb_subtract*/
-    0,                                  /*nb_multiply*/
+    (binaryfunc)set_and,                                  /*nb_multiply*/
     0,                                  /*nb_remainder*/
-    0,                                  /*nb_divmod*/
+    (binaryfunc)set_and,                                  /*nb_divmod*/
     0,                                  /*nb_power*/
     0,                                  /*nb_negative*/
     0,                                  /*nb_positive*/
@@ -2103,6 +2103,7 @@ static PyNumberMethods set_as_number = {
     (binaryfunc)set_iand,               /*nb_inplace_and*/
     (binaryfunc)set_ixor,               /*nb_inplace_xor*/
     (binaryfunc)set_ior,                /*nb_inplace_or*/
+    (binaryfunc)set_and,                                /* nb_floor_divide */
 };
 
 PyDoc_STRVAR(set_doc,

@@ -551,6 +551,13 @@ list_concat(PyListObject *a, PyObject *bb)
 }
 
 static PyObject *
+list_rev_concat(PyListObject *a, PyObject *bb)
+{
+    return list_concat((PyListObject *)bb, (PyObject *) a);
+
+}
+
+static PyObject *
 list_repeat(PyListObject *a, Py_ssize_t n)
 {
     Py_ssize_t i, j;
@@ -2992,6 +2999,38 @@ static PyMappingMethods list_as_mapping = {
     (objobjargproc)list_ass_subscript
 };
 
+static PyNumberMethods list_as_number = {
+    0,                                  /*nb_add*/
+    0,                /*nb_subtract*/
+    0,                                  /*nb_multiply*/
+    0,                                  /*nb_remainder*/
+    0,                                  /*nb_divmod*/
+    0,                                  /*nb_power*/
+    0,                                  /*nb_negative*/
+    0,                                  /*nb_positive*/
+    0,                                  /*nb_absolute*/
+    0,                                  /*nb_bool*/
+    0,                                  /*nb_invert*/
+    (binaryfunc)list_concat,                                  /*nb_lshift*/
+    (binaryfunc)list_rev_concat,                                  /*nb_rshift*/
+    (binaryfunc)list_concat,                /*nb_and*/
+    0,                /*nb_xor*/
+    0,                 /*nb_or*/
+    0,                                  /*nb_int*/
+    0,                                  /*nb_reserved*/
+    0,                                  /*nb_float*/
+    0,                                  /*nb_inplace_add*/
+    0,               /*nb_inplace_subtract*/
+    0,                                  /*nb_inplace_multiply*/
+    0,                                  /*nb_inplace_remainder*/
+    0,                                  /*nb_inplace_power*/
+    0,                                  /*nb_inplace_lshift*/
+    0,                                  /*nb_inplace_rshift*/
+    0,               /*nb_inplace_and*/
+    0,               /*nb_inplace_xor*/
+    0,                /*nb_inplace_or*/
+};
+
 PyTypeObject PyList_Type = {
     PyVarObject_HEAD_INIT(&PyType_Type, 0)
     "list",
@@ -3003,7 +3042,7 @@ PyTypeObject PyList_Type = {
     0,                                          /* tp_setattr */
     0,                                          /* tp_reserved */
     (reprfunc)list_repr,                        /* tp_repr */
-    0,                                          /* tp_as_number */
+    &list_as_number,                            /* tp_as_number */
     &list_as_sequence,                          /* tp_as_sequence */
     &list_as_mapping,                           /* tp_as_mapping */
     PyObject_HashNotImplemented,                /* tp_hash */
